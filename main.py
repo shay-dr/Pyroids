@@ -3,6 +3,7 @@
 # throughout this file
 import pygame
 import constants
+import player
 
 
 def main():
@@ -16,6 +17,7 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     fps = 60
+    p1 = player.Player(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2)
 
     while True:
         for event in pygame.event.get():
@@ -28,11 +30,18 @@ def main():
                     pygame.quit()
                     return
 
-        # game logic and drawing
-        screen.fill("black")
-        pygame.display.flip()
 
         dt =  clock.tick(fps) / 1000
+        
+        #update game state using dt
+        p1.update(dt)
+        
+        # draw screen and player
+        screen.fill("black")
+        p1.draw(screen)
+       
+
+        pygame.display.flip()
 
 if __name__ == "__main__":
     main()
