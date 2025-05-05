@@ -4,6 +4,8 @@
 import pygame
 import constants
 import player
+import asteroid
+import asteroidfield
 
 
 def main():
@@ -17,7 +19,24 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     fps = 60
+
+    #group config
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    #group association
+    player.Player.containers = (updatable, drawable)
+    asteroid.Asteroid.containers = (asteroids, updatable, drawable)
+    asteroidfield.AsteroidField.containers = (updatable,)
+
+    #create player(s)
     p1 = player.Player(constants.SCREEN_WIDTH / 2, constants.SCREEN_HEIGHT / 2)
+
+    #create asteroids field
+    af = asteroidfield.AsteroidField()
+
+    #create future items (asteroids, bullets, etc...)
 
     while True:
         for event in pygame.event.get():
@@ -34,12 +53,13 @@ def main():
         dt =  clock.tick(fps) / 1000
         
         #update game state using dt
-        p1.update(dt)
+        updatable.update(dt)
         
         # draw screen and player
         screen.fill("black")
-        p1.draw(screen)
-       
+        
+        for object in drawable:
+            object.draw(screen)
 
         pygame.display.flip()
 
