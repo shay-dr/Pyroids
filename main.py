@@ -2,6 +2,7 @@
 # the open-source pygame library
 # throughout this file
 import pygame
+import sys
 import constants
 import player
 import asteroid
@@ -43,11 +44,12 @@ def main():
             
             # event handling code:
             if event.type == pygame.QUIT:
-                return
+                pygame.quit()
+                sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
-                    return
+                    sys.exit()
 
 
         dt =  clock.tick(fps) / 1000
@@ -58,8 +60,14 @@ def main():
         # draw screen and player
         screen.fill("black")
         
-        for object in drawable:
-            object.draw(screen)
+        for drawable_obj in drawable:
+            drawable_obj.draw(screen)
+        
+        for asteroid_obj in asteroids:
+            if asteroid_obj.collide(p1):
+                print("Game over!")
+                pygame.quit()
+                sys.exit()
 
         pygame.display.flip()
 
