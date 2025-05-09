@@ -72,6 +72,13 @@ def main():
                 pygame.quit()
                 sys.exit()
 
+        for asteroid_obj in asteroids:
+            for shot_obj in shots: 
+                if shot_obj.collide(asteroid_obj):
+                    asteroid_obj.kill()
+                    shot_obj.kill()
+
+
         pygame.display.flip()
 
 if __name__ == "__main__":
